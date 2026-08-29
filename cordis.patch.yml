@@ -1,0 +1,11 @@
+- insert:
+    - id: recycle-bin
+      name: 'dsh-plugin-recycle-bin'
+      config:
+        enabled: true
+        blockDestructiveCommands: true
+        forbidEmptyRecycleBin: true
+        forbidWipe: true
+        minFreeBytes: 104857600
+        reserveBytes: 52428800
+        pwshPath: ''
