@@ -13,7 +13,7 @@
 - 🛡️ **禁止安全擦除**：拦截 `sdelete`、`shred`、`srm`、`cipher /w`、`wipe`。
 - 🚯 **禁止清空回收站**：拦截 `Clear-RecycleBin` 及针对 `C:\$Recycle.Bin` / `Recycler` 的删除。
 - ⛔ **满则停手**：删除前检查剩余空间，不足时不删，用 `ctx.userQuestions` 停顿询问用户（放空间后重试 / 坚持回收 / 取消）。
-- 💡 **低误判**：只在命令位置匹配删除 token，`$rm`、`form` 等不会误判。
+- 💡 **低误判**：只在命令位置匹配删除 token，`$rm`、`form`、`Get-Command Remove-Item`、`help rmdir` 等引用性提及不会误判（详见 [变更记录](#变更记录)）。
 - 🔍 **容量查看**：`trash_status` 工具报告回收站支持情况、剩余/总空间与安全阈值。
 - 🧠 **模型教育**：向系统提示注入 `safety:recycle-bin` 区段，引导模型只用 `file_trash`、不空回收站、满时询问。
 
@@ -86,7 +86,7 @@ trash_status(path: "C:\\Project")    # path 可选
 
 ## 开发与测试
 
-纯 JS、无构建。语法检查：`node --check lib/index.js lib/guard.js lib/recycle.js`。守卫匹配器（`lib/guard.js`，无外部依赖）可独立验证覆盖清单与误判场景（`$rm`、`form`）。
+纯 JS、无构建。语法检查：`node --check lib/index.js lib/guard.js lib/recycle.js`。守卫匹配器（`lib/guard.js`，无外部依赖）可独立验证覆盖清单与误判场景，跑 `npm test`（`node test-guard.mjs`）即可回放 23 例回归矩阵。
 
 ## 结构
 
@@ -97,7 +97,12 @@ lib/
 ├─ recycle.js  # Windows 回收站删除、空间测量、容量判定
 └─ index.d.ts  # 类型声明
 cordis.patch.yml / cordis.example.yml   # 组合接线
+test-guard.mjs                            # 守卫规则回归测试（npm test）
 ```
+
+## 变更记录
+
+- **0.1.4** — `lib/guard.js` 删除动词改用「真命令位置」lookbehind 锚定，修掉 `Get-Command Remove-Item`、`help rmdir`、`Get-Command -Name del`、`$rm = ...`、`Select-String -Pattern 'del'` 等引用性提及被误拦的假阳性；`find ... -delete` 规则同步锚定；新增 `test-guard.mjs` 23 例回归矩阵与 `scripts.test`。
 
 ## 许可
 

@@ -1,7 +1,7 @@
 {
   "name": "dsh-plugin-recycle-bin",
   "description": "Enforce recycle-bin-only deletion on Windows: block del/rm/Remove-Item and other disk-erase commands, forbid automatically emptying the recycle bin, and stop + ask the user when the recycle bin or disk is full.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -12,6 +12,9 @@
   },
   "types": "lib/index.d.ts",
   "license": "MIT",
+  "scripts": {
+    "test": "node test-guard.mjs"
+  },
   "dsh": {
     "runtime": "host",
     "bundle": {
