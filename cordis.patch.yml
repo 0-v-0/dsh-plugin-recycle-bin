@@ -9,3 +9,5 @@
         minFreeBytes: 104857600
         reserveBytes: 52428800
         pwshPath: ''
+        fileTrashTool: true
+        autoRecycle: auto

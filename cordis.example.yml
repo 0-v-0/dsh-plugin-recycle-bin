@@ -16,3 +16,5 @@
     minFreeBytes: 104857600          # 100 MB safety threshold
     reserveBytes: 52428800           # 50 MB reserved after a recycle
     pwshPath: ''                     # optional explicit pwsh path
+    fileTrashTool: true              # register file_trash tool (true) or not (false)
+    autoRecycle: auto                # "auto" (transparent), "ask" (confirm), "deny" (block)

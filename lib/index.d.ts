@@ -11,6 +11,10 @@ export interface RecycleBinConfig {
 	minFreeBytes?: number;
 	reserveBytes?: number;
 	pwshPath?: string;
+	/** Register the `file_trash` tool. Default: true. */
+	fileTrashTool?: boolean;
+	/** How extractable deletes are handled. Default: "auto". */
+	autoRecycle?: "auto" | "ask" | "deny";
 }
 
 /** Output value of the `file_trash` tool. */
@@ -26,9 +30,14 @@ export interface GuardVerdict {
 	blocked: boolean;
 	kind?: "delete" | "wipe" | "empty-recycle";
 	reason?: string;
+	/** Present when blocked is false and kind is "delete": extracted literal paths. */
+	paths?: string[];
 }
 
 export function guardCommand(command: string, options?: { allowEmptyRecycle?: boolean; allowWipe?: boolean }): GuardVerdict;
+
+/** Extract literal paths from a delete command, or null if extraction is unsafe. */
+export function extractPaths(command: string): string[] | null;
 
 export function isWindows(platform?: NodeJS.Platform): boolean;
 export function resolvePwsh(configured?: string, env?: NodeJS.ProcessEnv, platform?: NodeJS.Platform): string;
